@@ -348,12 +348,15 @@ body {
   width: 300px;
   margin-right: auto;
   margin-left: auto;
-  gap: 5px;
   margin-bottom: 30px;
+  border-left: 1px solid #000000;
+  border-top: 1px solid #000000;
 }
 
 .preview > div {
   background-color: #eee;
+  border-right: 1px solid #000000;
+  border-bottom: 1px solid #000000;
 }
 
 .wrapper {
