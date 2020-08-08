@@ -1,4 +1,4 @@
-# grid-dots-marker
+# grid-dots-maker
 
 ## Project setup
 ```
