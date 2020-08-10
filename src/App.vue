@@ -20,10 +20,10 @@
 /**
  * PreviewStageでの設定をDrawingStageに伝えたりなどします。
  */
-import TheHeader from "@/components/TheHeader";
-import TheFooter from "@/components/TheFooter";
+import TheHeader from "@/components/TheHeader.vue";
+import TheFooter from "@/components/TheFooter.vue";
 import PreviewStage from "@/components/PreviewStage.vue";
-import DrawingStage from "@/components/DrawingStage";
+import DrawingStage from "@/components/DrawingStage.vue";
 import { defineComponent, reactive } from "@vue/composition-api";
 
 type State = {
