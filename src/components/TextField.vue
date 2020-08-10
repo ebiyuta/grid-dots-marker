@@ -43,7 +43,7 @@ export default defineComponent({
       newValue: props.initDots
     });
     const changeDots = (): void => {
-      emit("input", state.newValue);
+      emit("input", Number(state.newValue));
     };
     return {
       state,

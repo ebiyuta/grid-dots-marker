@@ -14,22 +14,26 @@
             class="canvas_dots"
             v-for="(n, index) in styleList"
             :key="index"
-            @click="setColor(state.currentColor, index)"
+            @click.left="setColor(state.currentColor, index)"
+            @click.right.prevent="setColor(state.currentSubColor, index)"
             :style="n"
           ></button>
         </div>
       </div>
       <div class="property">
         <h2>COLOR</h2>
+        <p>現在の色<br><small>（右クリックでサブカラー）</small></p>
         <div class="property_currentColor">
-          <p>現在の色</p>
-          <div>
-            <input
-              class="property_currentColorButton"
-              type="color"
-              v-model="state.currentColor"
-            />
-          </div>
+          <input
+            class="property_currentColorButton"
+            type="color"
+            v-model="state.currentColor"
+          />
+          <input
+            class="property_currentSubColorButton"
+            type="color"
+            v-model="state.currentSubColor"
+          />
         </div>
         <div>
           <p>今まで使った色</p>
@@ -38,7 +42,8 @@
               class="property_changeColorButton"
               v-for="(color, index) in state.historyColor"
               :key="index"
-              @click="changeColor(color)"
+              @click.left="changeColor(color)"
+              @click.right.prevent="changeSubColor(color)"
               :style="`backgroundColor: ${color}`"
             >
               クリックするとこの色に変更
@@ -79,6 +84,7 @@ type Props = {
 
 type State = {
   currentColor: string;
+  currentSubColor: string;
   historyColor: string[];
   styleList: string[];
   bodyWidth: number;
@@ -102,6 +108,7 @@ export default defineComponent({
   setup(props: Props, { emit }) {
     const state: State = reactive({
       currentColor: "#6B8CFF",
+      currentSubColor: "#ffffff",
       historyColor: ["#ffffff", "#000000"],
       styleList: props.styleList,
       bodyWidth: props.bodyWidth
@@ -128,6 +135,13 @@ export default defineComponent({
      */
     const changeColor = (color: string): void => {
       state.currentColor = color;
+    };
+    /**
+     * 履歴の色をクリックした時に現在の色を変更します
+     * @param color
+     */
+    const changeSubColor = (color: string): void => {
+      state.currentSubColor = color;
     };
     /**
      * ドットをクリックした時に色を変更する処理です。同時にヒストリーに色を追加します。
@@ -170,13 +184,22 @@ export default defineComponent({
       emit("reset");
     };
 
-    return { state, createCode, changeColor, setColor, copy, reset };
+    return {
+      state,
+      createCode,
+      changeColor,
+      changeSubColor,
+      setColor,
+      copy,
+      reset
+    };
   }
 });
 </script>
 
 <style lang="scss" scoped>
 .canvasWrapper {
+  user-select: none;
   display: grid;
   width: 700px;
   grid-template-columns: 500px 200px;
@@ -200,7 +223,8 @@ export default defineComponent({
 
 .property {
   .property_currentColor {
-    margin-bottom: 30px;
+    position: relative;
+    margin-bottom: 60px;
   }
   .property_historyColor {
     display: grid;
@@ -209,6 +233,15 @@ export default defineComponent({
     justify-items: center;
   }
   .property_currentColorButton {
+    position: relative;
+    z-index: 1;
+    width: 80px;
+    height: 80px;
+  }
+  .property_currentSubColorButton {
+    position: absolute;
+    right: 0;
+    top: 30px;
     width: 80px;
     height: 80px;
   }
